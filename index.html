@@ -2,7 +2,7 @@
 <html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
   <head>
     <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
-    <title>API Design Best Practices</title>
+    <title>Web API Design Cookbook</title>
     <script class='remove'>
       var respecConfig = {
           specStatus: "ED",
@@ -13,7 +13,7 @@
                     company:    "Robineko",
                     companyURL: "http://robineko.com/" }
           ],
-          edDraftURI:   "http://w3c-test.org/dap/api-design/",
+          edDraftURI:   "http://scriptlib-cg.github.com/api-design-cookbook/",
           copyrightStart: 2011,
           noIDLIn:      true,
           // wg:           "Web Applications (WebApps) Working Group",
@@ -31,7 +31,7 @@
   <body>
     <section id='abstract'>
       <p>
-        This document captures best practices in designing APIs that fit well into the Web platform as
+        This document captures common practices in designing APIs that fit well into the Web platform as
         a whole, using WebIDL [[!WEBIDL]].
       </p>
     </section>
@@ -46,18 +46,23 @@
       <p>
         Over a relatively short period of time the number of different APIs being created for use on the
         Web has grown at a sustained pace. In working on these interfaces, many in the community discuss
-        the benefits of certain approaches over others and reach agreement as to best practices when
+        the benefits of certain approaches over others and reach agreement as to the preferred solution when
         facing a given problem.
       </p>
       <p>
         Keeping track of all these gems is however difficult given the volume of work being carried on
         in parallel and the sometimes disjointed nature of the groups involved. As a result, it can take
-        a long while and many arguments repeated almost identically before a discovered best practice
-        becomes common.
+        a long while and many arguments repeated almost identically before a good solution becomes common.
+      </p>
+      <p>
+        What's more, it is altogether too rare to garner feedback from developers who are actually using
+        these features in their day-to-day work. Because of this, several APIs have shipped with issues
+        that could have been caught earlier on in the process. This document therefore also endeavours
+        to elicit feedback from developers in order to make it more readily available to API designers.
       </p>
       <p>
         The goal of this document is to capture such ideas as they appear and accrete them over time so as
-        to constitute a repository of knowledge on this topic. As a guide it does not however endeavour to
+        to constitute a repository of knowledge on this topic. As a guide it does not however attempt to
         supplant editors' brains in making decisions as to how to design their APIs, and consequently one
         must keep in mind that the reasoning behind a specific recommendation is often more important than
         its result. Furthermore, in some cases there may not be a single consensual best approach, and 
