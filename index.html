@@ -174,6 +174,62 @@
       </p>
     </section>
     <section>
+      <h2>Don't Use Numerical Constants</h2>
+      <p>
+        Interfaces regularly require constant identifiers. You have a node and you want to know if it's
+        an element or a comment. You have a message and you want to know if it's email or SMS. That much makes
+        sense. What does not make sense is insisting on naming these things with numbers when we could name them 
+        with, you know, names.
+      </p>
+      <p>
+        There are several variants in this bad practice. First, is the lovingly terse approach:
+      </p>
+      <pre class='example highlight'>
+        if (foo.type === 17) doSomething();
+      </pre>
+      <p>
+        Then there is the comment you have to paste every time:
+      </p>
+      <pre class='example highlight'>
+        // check if this of the fungible type
+        if (foo.type === 17) doSomething();
+      </pre>
+      <p>
+        Or we can have the uselessly long variant:
+      </p>
+      <pre class='example highlight'>
+        if (foo.type === FooInterface.FUNGIBLE_TYPE) doSomething();
+      </pre>
+      <p>
+        And there's the meh option:
+      </p>
+      <pre class='example highlight'>
+        var isFungible = FooInterface.FUNGIBLE_TYPE;
+        // ...
+        if (foo.type === isFungible) doSomething();
+      </pre>
+      <p>
+        None of the above is as simple, terse, and self-documenting as:
+      </p>
+      <pre class='example highlight'>
+        if (foo.type === "fungible") doSomething();
+      </pre>
+      <p>
+        We're not in the 1970s, standardising UNIX system calls. Strings are lightweight enough,
+        and readable. There is no need to define string constants to support these: just the plain
+        strings, defined as such in specification prose, work. In some languages, this can lose
+        static verification, but in JavaScript it makes no difference: if you misspell the the
+        string you might have equally misspelt the constant, with the same failure.
+      </p>
+      <p>
+        Additionally, interfaces that don't start out by listing a dozen (useless) constants are
+        more readable. The only downside to doing away with numerical constants is the negative
+        impact it may on occasion have on feature detection. It would however be better to rely
+        on other aspects that enable feature detection, since these constants can easily be added
+        for a half-baked feature (and frequently have been).
+      </p>
+    </section>
+    <section>
       <h2>When to use <code>NoInterfaceObject</code></h2>
       <p>
         ...
