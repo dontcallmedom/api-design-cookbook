@@ -71,9 +71,100 @@
       </p>
     </section>
     <section>
-      <h2>WebIDL Legacy Features</h2>
+      <h2>Using Dictionaries</h2>
       <p>
         ...
+      </p>
+    </section>
+    <section>
+      <h2>Ensuring that Feature Detection is Possible</h2>
+      <p>
+        ...
+      </p>
+    </section>
+    <section>
+      <h2>When To Be Asynchronous</h2>
+      <p>
+        ...
+      </p>
+    </section>
+    <section>
+      <h2>Specifying Callbacks</h2>
+      <p>
+        Asynchronous method calls require a point of reentry in the form of a callback. There are multiple
+        ways of specifying these, none of which is consensually consider the one and only approach.
+      </p>
+      <p>
+        One is <dfn>success/error callback functions</dfn>, as used in [[GEOLOCATION-API]]. It takes the shape of a method
+        call that accepts a callback function for success followed by one for errors. There may be arguments
+        before the success callback, and the error callback is usually optional.
+      </p>
+      <pre class='example highlight'>
+        navigator.petKitten(
+                function () {
+                    console.log("kitten is purring");
+                }
+            ,   function (err) {
+                    console.log("kitten hates you, because: " + err);
+                }
+        );
+      </pre>
+      <p>
+        Downsides of this approach are that it is a little more verbose and does not encourage error handling. It 
+        also lacks in extensibility since adding new arguments to the method will typically require placing them
+        after the optional error handler — making them de facto optional. Likewise, extending it to support not
+        just callbacks for success and error but also for other situations that may warrant reporting information
+        back (e.g. progress being made) is clumsy at best. Since it is only used in [[GEOLOCATION-API]] it does not
+        appear to be a required pattern for consistency.
+      </p>
+      <p>
+        Another is <dfn>returning an EventTarget object</dfn>, as pioneered by [[XMLHTTPREQUEST]]. This consists
+        in opening a request that returns an object on which event handlers can be registered, then starting
+        that request with a specific call.
+      </p>
+      <pre class='example highlight'>
+        var kitpet = navigator.openKittenPetting();
+        kitpet.onpurr = function () { console.log("kitten is purring"); };
+        kitpet.ondrool = function () { console.log("kitten is now drooling"); };
+        kitpet.onviciousbite = function () { console.log("kitten bit your hand off"); };
+        kitpet.start();
+      </pre>
+      <p>
+        The approach is the most verbose and does not encourage error handling, but it does have the advantages
+        of being trivially extended for greater feedback, and of being familiar to users of [[XMLHTTPREQUEST]]
+        (and now [[INDEXEDDB]]). It can, however, feel rather overkill if extensions for additional events does
+        not seem likely.
+      </p>
+      <p>
+        Then there are <dfn>NodeJS style callbacks</dfn>. For every asynchronous operation, every callback takes
+        as first parameter an error object which is <code>null</code> when the operation was a success, followed
+        by as many pieces of information as are needed to capture the success.
+      </p>
+      <pre class='example highlight'>
+        navigator.petKitten(function (err, state) {
+            if (err) console.log("kitten mauled your face with extreme prejudice");
+            else console.log("kittem manifest joy by " + state);
+        })
+      </pre>
+      <p>
+        The primary value in this approach is that it puts errors "right there" where they are likely to be handled.
+        Its consistency is also very helpful in creating chains of callbacks, a feature that proves precious
+        when multiple callbacks can become nested. The major downside of this approach is that it is currently
+        not used in the rest of stack and therefore probably only familiar to NodeJS developers (which granted
+        represent a fast-growing proportion of the general web developer population).
+      </p>
+      <p>
+        Finally there are <dfn>promises</dfn>. These are similar to <a>returning an EventTarget object</a> but
+        more generic and use a slightly different style.
+      </p>
+      <pre class='example highlight'>
+        navigator.petKitten()
+                 .then(function () { console.log("kitten is purring"); })
+                 .fail(function () { console.log("kitten bit your hand off"); })
+                 .run();
+      </pre>
+      <p>
+        There is elegance and flexibility in promises, but to date they are used in no Web specification.
       </p>
     </section>
     <section>
@@ -83,21 +174,21 @@
       </p>
     </section>
     <section>
-      <h2>When to use NoInterfaceObject</h2>
+      <h2>When to use <code>NoInterfaceObject</code></h2>
       <p>
         ...
       </p>
     </section>
     <section>
-      <h2>Using Dictionaries</h2>
+      <h2>WebIDL Legacy Features</h2>
       <p>
-        ...
+        The features of WebIDL listed in this section have been specified for the sole purpose of describing
+        legacy APIs such as are found in “DOM 0”. It is particularly important that you do not use them unless
+        you are trying to document one such API — they must not be used for any kind of new work. The list
+        includes:
       </p>
-    </section>
-    <section>
-      <h2>Specifying Callbacks</h2>
-      <p>
-        ...
+      <p class='issue'>
+        Get an actual list.
       </p>
     </section>
     <section class='appendix'>
